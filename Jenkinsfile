@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.9'
+        maven 'Maven 3.9.15'
         jdk 'JDK21'
     }
 
@@ -13,7 +13,7 @@ pipeline {
                 echo 'Pulling source code from GitHub...'
                 git branch: 'main',
                     credentialsId: 'GitHubCreds',
-                    url: 'https://github.com/rollinopz/devops-trends.git'
+                    url: 'https://github.com/bulck/devops-trends.git'
             }
         }
 
@@ -44,7 +44,7 @@ pipeline {
                 deploy adapters: [
                     tomcat9(
                         credentialsId: 'TomcatCreds',
-                        url: 'http://localhost:8084'
+                        url: 'http://localhost:8080'
                     )
                 ],
                 contextPath: '/devops-trends',
@@ -57,7 +57,7 @@ pipeline {
     post {
         success {
             echo 'Deployment successful!'
-            echo 'App running at: http://localhost:8084/devops-trends'
+            echo 'App running at: http://localhost:8080/devops-trends'
         }
         failure {
             echo 'Pipeline failed. Check console output for details.'
