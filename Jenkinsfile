@@ -13,7 +13,7 @@ pipeline {
                 echo 'Pulling source code from GitHub...'
                 git branch: 'main',
                     credentialsId: 'GitHubCreds',
-                    url: 'https://github.com/bulck/devops-trends.git'
+                    url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
 
