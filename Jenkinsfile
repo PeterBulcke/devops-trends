@@ -49,7 +49,7 @@ pipeline {
                     )
                 ],
                 contextPath: '/devops-trends',
-                war: "${env.WORKSPACE}\\target\\devops-trends.war"
+                war: "target/*.war"
             }
         }
     }
