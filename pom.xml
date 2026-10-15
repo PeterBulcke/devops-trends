@@ -62,7 +62,7 @@
             <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-war-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
