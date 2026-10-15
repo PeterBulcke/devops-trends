@@ -20,21 +20,21 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
-                bat 'mvn clean compile'
+                sh 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
-                bat 'mvn package -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
 
