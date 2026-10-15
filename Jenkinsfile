@@ -44,13 +44,14 @@ pipeline {
                 deploy adapters: [
                     tomcat9(
                         credentialsId: 'TomcatCreds',
+                        path: '/manager/text',
                         url: 'http://localhost:8080'
-                        contextPath: '/devops-trends',
-                     war: "${env.WORKSPACE}\\target\\devops-trends.war"
                     )
+                ],
+                contextPath: '/devops-trends',
+                war: "${env.WORKSPACE}\\target\\devops-trends.war"
             }
         }
-
     }
 
     post {
@@ -62,8 +63,8 @@ pipeline {
             echo 'Pipeline failed. Check console output for details.'
         }
         always {
-            echo 'Pipeline finished. Cleaning workspace...'
-            deleteDir()
+            echo 'Pipeline finished.'
+            cleanWs()   // or: deleteDir()
         }
     }
 }
