@@ -40,7 +40,7 @@ pipeline {
 
         stage('Deploy to Tomcat') {
             steps {
-                echo 'Deploying to local Tomcat...'
+                echo 'Deploying to Tomcat...'
                 deploy adapters: [
                     tomcat9(
                         credentialsId: 'TomcatCreds',
