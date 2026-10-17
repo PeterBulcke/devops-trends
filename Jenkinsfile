@@ -20,27 +20,27 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
-                bat 'mvn clean compile'
+                sh 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
-                bat 'mvn package -DskipTests'
+                sh 'mvn package -DskipTests'
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
-                echo 'Deploying to local Tomcat...'
+                echo 'Deploying to Tomcat...'
                 deploy adapters: [
                     tomcat9(
                         credentialsId: 'TomcatCreds',
@@ -48,22 +48,24 @@ pipeline {
                         contextPath: '/devops-trends',
                      war: "target/*.war"
                     )
+                ],
+                contextPath: '/devops-trends',
+                war: "target/*.war"
             }
         }
-
     }
 
     post {
         success {
             echo 'Deployment successful!'
-            echo 'App running at: http://localhost:8080/devops-trends'
+            echo 'App running at: http://13.39.88.130:8080/devops-trends'
         }
         failure {
             echo 'Pipeline failed. Check console output for details.'
         }
         always {
-            echo 'Pipeline finished. Cleaning workspace...'
-            deleteDir()
+            echo 'Pipeline finished.'
+            cleanWs()   // or: deleteDir()
         }
     }
 }
