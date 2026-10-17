@@ -45,7 +45,7 @@ pipeline {
                     tomcat9(
                         credentialsId: 'TomcatCreds',
                         path: '/manager/text',
-                        url: 'http://13.39.88.130.218:8080'
+                        url: 'http://13.39.88.130:8080'
                     )
                 ],
                 contextPath: '/devops-trends',
