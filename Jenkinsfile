@@ -12,7 +12,6 @@ pipeline {
             steps {
                 echo 'Pulling source code from GitHub...'
                 git branch: 'main',
-                    credentialsId: 'GitHubCreds',
                     url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
@@ -37,17 +36,11 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+
         stage('Deploy to Tomcat') {
             steps {
                 echo 'Deploying to Tomcat...'
                 deploy adapters: [tomcat9(credentialsId: 'tomcat-jenkins-creds', url: 'http://13.39.88.130:8080')], contextPath: 'devops-trends', war: 'target/*.war'
-            }
-        }
-        
-                    )
-                ],
-                contextPath: '/devops-trends',
-                war: "target/*.war"
             }
         }
     }
