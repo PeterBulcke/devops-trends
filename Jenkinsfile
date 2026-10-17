@@ -46,7 +46,7 @@ pipeline {
                         credentialsId: 'TomcatCreds',
                         url: 'http://localhost:8080'
                         contextPath: '/devops-trends',
-                     war: "${env.WORKSPACE}\\target\\devops-trends.war"
+                     war: "target/*.war"
                     )
             }
         }

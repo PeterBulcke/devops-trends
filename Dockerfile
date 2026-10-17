@@ -8,13 +8,14 @@ COPY src ./src
  
 RUN mvn clean package -DskipTests
  
+ 
 # Stage 2: Run the application
-FROM tomcat:10-jdk21
+FROM eclipse-temurin:21-jre
  
-WORKDIR /usr/local/tomcat/webapps
+WORKDIR /app
  
-COPY --from=build /app/target/*.war ROOT.war
+COPY --from=build /app/target/*.war app.jar
  
 EXPOSE 8080
  
-CMD ["catalina.sh", "run"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
