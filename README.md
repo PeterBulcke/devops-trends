@@ -14,7 +14,7 @@
 <h2>🚀 Features</h2>
 
 <ul>
-  <li>Interactive display of top DevOps trends for 2025</li>
+  <li>Interactive display of top DevOps trends for 2027</li>
   <li>Usage statistics for popular DevOps tools</li>
   <li>Current DevOps salary information by experience level</li>
   <li>Responsive design using Bootstrap 5</li>
