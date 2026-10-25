@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 echo 'Deploying to Tomcat...'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-jenkins-creds', url: 'http://13.39.88.130:8080')], contextPath: 'devops-trends', war: 'target/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://13.39.88.130:8081')], contextPath: 'devops-trends', war: 'target/*.war'
             }
         }
     }
@@ -48,7 +48,7 @@ pipeline {
     post {
         success {
             echo 'Deployment successful!'
-            echo 'App running at: http://13.39.88.130:8080/devops-trends'
+            echo 'App running at: http://13.39.88.130:8081/devops-trends'
         }
         failure {
             echo 'Pipeline failed. Check console output for details.'
