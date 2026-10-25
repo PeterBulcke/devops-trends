@@ -6,8 +6,12 @@ pipeline {
         jdk 'JDK21'
     }
 
-    stages {
+    environment {
+        // 'credentials()' fetches the secret by its ID
+        WEBHOOK_SECRET = credentials('github-webhook-secret')
+    }
 
+    stages {
         stage('Checkout') {
             steps {
                 echo 'Pulling source code from GitHub...'
