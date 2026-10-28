@@ -70,7 +70,7 @@ pipeline {
         }
         always {
             echo 'Pipeline finished. Cleaning workspace...'
-            node {
+            node ('') {
                 deleteDir()
             }
         }
