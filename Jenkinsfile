@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         // 'credentials()' fetches the secret by its ID
-        WEBHOOK_SECRET = credentials('github-webhook-secret')
+        WEBHOOK_SECRET = credentials('72dfba94-57a4-4bc5-8bea-8e4a4ef9f576')
     }
 
     stages {
@@ -44,7 +44,7 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 echo 'Deploying to Tomcat...'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://172.31.10.252:8081')], contextPath: 'devops-trends', war: 'target/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://172.31.13.248:8081')], contextPath: 'devops-trends', war: 'target/*.war'
             }
         }
     }
@@ -59,7 +59,11 @@ pipeline {
         }
         always {
             echo 'Pipeline finished.'
-            cleanWs()   // or: deleteDir()
+        script {
+            if (getContext(hudson.FilePath)) {
+                cleanWs()
+            }
+        }   // or: deleteDir()
         }
     }
 }
