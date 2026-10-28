@@ -48,7 +48,7 @@ pipeline {
             steps {
                 echo "Deploying to Tomcat EC2 at ${TOMCAT_URL}..."
                 deploy adapters: [
-                    tomcat9(
+                    tomcat10(
                         credentialsId: 'tomcat-credentials',
                         url: "${TOMCAT_URL}"
                     )
