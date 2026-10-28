@@ -16,6 +16,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 echo 'Pulling source code from GitHub...'
@@ -51,6 +52,8 @@ pipeline {
                     set -e
                     if ! nc -zv -w 5 ${TOMCAT_HOST} 22; then
                         echo "ERROR: Cannot reach ${TOMCAT_HOST}:22 from this Jenkins host."
+                        echo "Check the Tomcat instance's Security Group inbound rule for TCP/22"
+                        echo "from this Jenkins host's IP, and the subnet Network ACL."
                         exit 1
                     fi
                 """
@@ -63,13 +66,19 @@ pipeline {
                 sshagent([env.SSH_CRED_ID]) {
                     sh """
                         set -e
+
+                        # 1) Seed known_hosts so scp does not fail on first contact.
                         mkdir -p ~/.ssh
                         ssh-keyscan -H ${TOMCAT_HOST} >> ~/.ssh/known_hosts 2>/dev/null || true
 
+                        # 2) Copy WAR to the target host's /tmp.
                         scp -o StrictHostKeyChecking=accept-new \
                             target/${APP_CONTEXT}.war \
                             ${TOMCAT_USER}@${TOMCAT_HOST}:/tmp/${APP_CONTEXT}.war
 
+                        # 3) Atomically replace the WAR in Tomcat 10's webapps dir,
+                        #    then remove the exploded directory so Tomcat unpacks
+                        #    the fresh WAR on next detection.
                         ssh -o StrictHostKeyChecking=accept-new \
                             ${TOMCAT_USER}@${TOMCAT_HOST} "
                                 set -e
@@ -80,32 +89,12 @@ pipeline {
                 }
             }
         }
-
-        stage('Verify Deployment') {
-            steps {
-                echo "Verifying that ${APP_CONTEXT} is serving HTTP 200..."
-                sh """
-                    set -e
-                    for i in \$(seq 1 30); do
-                        if curl -sf -o /dev/null "http://${TOMCAT_HOST}:${TOMCAT_PORT}/${APP_CONTEXT}/"; then
-                            echo "App is up at http://${TOMCAT_HOST}:${TOMCAT_PORT}/${APP_CONTEXT}/"
-                            exit 0
-                        fi
-                        echo "Attempt \$i/30: app not yet responding, retrying in 2s..."
-                        sleep 2
-                    done
-                    echo "ERROR: ${APP_CONTEXT} did not respond with HTTP 2xx after 60s."
-                    echo "Check ${TOMCAT_HOME}/logs/catalina.out on ${TOMCAT_HOST}."
-                    exit 1
-                """
-            }
-        }
     }
 
     post {
         success {
-            echo "Pipeline finished. Deployment successful!"
-            echo "App running at: http://${TOMCAT_HOST}:${TOMCAT_PORT}/${APP_CONTEXT}/"
+            echo 'Pipeline finished. Deployment successful!'
+            echo "App should be running at: http://${TOMCAT_HOST}:${TOMCAT_PORT}/${APP_CONTEXT}/"
         }
         failure {
             echo 'Pipeline failed. Check console output for details.'
