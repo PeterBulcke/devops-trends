@@ -46,15 +46,11 @@ pipeline {
 
         stage('Deploy to Tomcat') {
             steps {
-                echo "Deploying to Tomcat EC2 at ${TOMCAT_URL}..."
-                deploy adapters: [
-                    tomcat9(
-                        credentialsId: 'tomcat-credentials',
-                        url: "${TOMCAT_URL}"
-                    )
-                ],
-                contextPath: "${CONTEXT_PATH}",
-                war: 'target/devops-trends.war'
+                 sh '''
+            scp target/devops-trends.war user@172.31.6.68:/path/to/tomcat/webapps/
+            ssh user@172.31.6.68 "sudo systemctl restart tomcat10"
+        '''
+                  
             }
         }
     }
