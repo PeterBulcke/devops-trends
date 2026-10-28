@@ -7,15 +7,18 @@ pipeline {
     }
 
     environment {
-        // 'credentials()' fetches the secret by its ID
-        WEBHOOK_SECRET = credentials('72dfba94-57a4-4bc5-8bea-8e4a4ef9f576')
+        TOMCAT_URL        = 'http://172.31.6.68:8081'      // private IP used by Jenkins to deploy
+        TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8081'     // public IP used to browse the app
+        CONTEXT_PATH      = 'devops-trends'                // no leading slash
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 echo 'Pulling source code from GitHub...'
                 git branch: 'main',
+                    credentialsId: 'github-pat',
                     url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
@@ -23,28 +26,35 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
-                sh 'mvn clean compile'
+                sh 'mvn -B clean compile'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test'
+                sh 'mvn -B test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
-                sh 'mvn package -DskipTests'
+                sh 'mvn -B package -DskipTests'
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
-                echo 'Deploying to Tomcat...'
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: 'http://172.31.13.248:8081')], contextPath: 'devops-trends', war: 'target/*.war'
+                echo "Deploying to Tomcat EC2 at ${TOMCAT_URL}..."
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'tomcat-credentials',
+                        url: "${TOMCAT_URL}"
+                    )
+                ],
+                contextPath: "${CONTEXT_PATH}",
+                war: 'target/devops-trends.war'
             }
         }
     }
@@ -52,18 +62,17 @@ pipeline {
     post {
         success {
             echo 'Deployment successful!'
-            echo 'App running at: http://13.39.88.130:8081/devops-trends'
+            echo "Deployed to ${TOMCAT_URL}/${CONTEXT_PATH} (Tomcat private IP)"
+            echo "View the app at ${TOMCAT_PUBLIC_URL}/${CONTEXT_PATH}"
         }
         failure {
             echo 'Pipeline failed. Check console output for details.'
         }
         always {
-            echo 'Pipeline finished.'
-        script {
-            if (getContext(hudson.FilePath)) {
-                cleanWs()
+            echo 'Pipeline finished. Cleaning workspace...'
+            node {
+                deleteDir()
             }
-        }   // or: deleteDir()
         }
     }
 }
