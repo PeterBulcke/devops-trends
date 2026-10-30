@@ -1,106 +1,90 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3.9.15'
-        jdk   'JDK21'
-    }
-
     environment {
-        TOMCAT_HOST  = '172.31.6.68'
-        TOMCAT_USER  = 'ubuntu'
-        TOMCAT_HOME  = '/var/lib/tomcat9'
-        TOMCAT_PORT  = '8080'
-        APP_CONTEXT  = 'devops-trends'
-        SSH_CRED_ID  = 'jenkins-tomcat-key'
+        // Tomcat private IP (deploys)
+        TOMCAT_URL = 'http://<TOMCAT_PRIVATE_IP>:8080'
+
+        // Tomcat Elastic IP (browsing)
+        TOMCAT_PUBLIC_URL = 'http://<TOMCAT_PUBLIC_IP>:8080'
+
+        // Tomcat application path
+        CONTEXT_PATH = '/devops-trends'
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 echo 'Pulling source code from GitHub...'
-                checkout scm
+
+                // Use the GitHub credential ID
+                git branch: 'main',
+                    credentialsId: 'github-pat',
+                    url: 'https://github.com/<YOUR_GITHUB_USERNAME>/devops-trends.git'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
-                sh 'mvn clean compile'
+
+                // Compile with Maven
+                sh 'mvn -B clean compile'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test'
+
+                // Run Maven tests
+                sh 'mvn -B test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
-                sh 'mvn package -DskipTests'
-            }
-        }
 
-        stage('Preflight: Connectivity') {
-            steps {
-                echo "Checking TCP connectivity to ${TOMCAT_HOST}:22 ..."
-                sh """
-                    set -e
-                    if ! nc -zv -w 5 ${TOMCAT_HOST} 22; then
-                        echo "ERROR: Cannot reach ${TOMCAT_HOST}:22 from this Jenkins host."
-                        echo "Check the Tomcat instance's Security Group inbound rule for TCP/22"
-                        echo "from this Jenkins host's IP, and the subnet Network ACL."
-                        exit 1
-                    fi
-                """
+                // Package WAR without rerunning tests
+                sh 'mvn -B package -DskipTests'
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
-                echo "Deploying WAR to Tomcat 9 at ${TOMCAT_HOST} via SCP..."
-                sshagent([env.SSH_CRED_ID]) {
-                    sh """
-                        set -e
+                echo "Deploying to Tomcat EC2 at ${TOMCAT_URL}..."
 
-                        # 1) Seed known_hosts so scp does not fail on first contact.
-                        mkdir -p ~/.ssh
-                        ssh-keyscan -H ${TOMCAT_HOST} >> ~/.ssh/known_hosts 2>/dev/null || true
+                // Use the Deploy to container plugin
+                // Use the Tomcat credential ID
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'TomcatCreds',
+                        url: "${TOMCAT_URL}"
+                    )
+                ],
 
-                        # 2) Copy WAR to the target host's /tmp.
-                        scp -o StrictHostKeyChecking=accept-new \
-                            target/${APP_CONTEXT}.war \
-                            ${TOMCAT_USER}@${TOMCAT_HOST}:/tmp/${APP_CONTEXT}.war
-
-                        # 3) Atomically replace the WAR in Tomcat 10's webapps dir,
-                        #    then remove the exploded directory so Tomcat unpacks
-                        #    the fresh WAR on next detection.
-                        ssh -o StrictHostKeyChecking=accept-new \
-                            ${TOMCAT_USER}@${TOMCAT_HOST} "
-                                set -e
-                                sudo mv -f /tmp/${APP_CONTEXT}.war ${TOMCAT_HOME}/webapps/${APP_CONTEXT}.war
-                                sudo rm -rf ${TOMCAT_HOME}/webapps/${APP_CONTEXT}
-                            "
-                    """
-                }
+                // Set the deployment context path
+                contextPath: "${CONTEXT_PATH}",
+                war: 'target/devops-trends.war'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline finished. Deployment successful!'
-            echo "App should be running at: http://${TOMCAT_HOST}:${TOMCAT_PORT}/${APP_CONTEXT}/"
+            echo 'Deployment successful!'
+            echo "Deployed to ${TOMCAT_URL}${CONTEXT_PATH} (Tomcat private IP)"
+            echo "View the app at ${TOMCAT_PUBLIC_URL}${CONTEXT_PATH}"
         }
+
         failure {
             echo 'Pipeline failed. Check console output for details.'
         }
+
         always {
-            echo 'Workspace not cleaned (kept for inspection).'
+            echo 'Pipeline finished. Cleaning workspace...'
+            cleanWs()
         }
     }
 }
