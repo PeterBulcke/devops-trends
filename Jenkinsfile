@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         // Tomcat private IP (deploys)
-        TOMCAT_URL = 'http://<TOMCAT_PRIVATE_IP>:8080'
+        TOMCAT_URL = 'http://172.31.7.244:8080'
 
         // Tomcat Elastic IP (browsing)
-        TOMCAT_PUBLIC_URL = 'http://<TOMCAT_PUBLIC_IP>:8080'
+        TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8080'
 
         // Tomcat application path
         CONTEXT_PATH = '/devops-trends'
@@ -19,8 +19,8 @@ pipeline {
 
                 // Use the GitHub credential ID
                 git branch: 'main',
-                    credentialsId: 'github-pat',
-                    url: 'https://github.com/<YOUR_GITHUB_USERNAME>/devops-trends.git'
+                    credentialsId: 'github-pat-jenkins',
+                    url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
 
@@ -59,7 +59,7 @@ pipeline {
                 // Use the Tomcat credential ID
                 deploy adapters: [
                     tomcat9(
-                        credentialsId: 'TomcatCreds',
+                        credentialsId: 'jenkins-deployer',
                         url: "${TOMCAT_URL}"
                     )
                 ],
