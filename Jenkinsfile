@@ -45,8 +45,8 @@ pipeline {
                 withCredentials([sshUserPrivateKey(credentialsId: 'tomcat-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                     sh '''
                         set -e
-                        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ubuntu@''' + env.TOMCAT_HOST + ''' "rm -rf ''' + env.TOMCAT_WEBAPPS + '''/devops-trends*"
-                        scp -i "$SSH_KEY" -o StrictHostKeyChecking=no target/devops-trends.war ubuntu@''' + env.TOMCAT_HOST + ''':''' + env.TOMCAT_WEBAPPS + '''/
+                        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ubuntu@172.31.4.11 "rm -rf /opt/apache-tomcat-9.0.98/webapps/devops-trends*" ;
+                        scp -i "$SSH_KEY" -o StrictHostKeyChecking=no target/devops-trends.war ubuntu@172.31.4.11:/opt/apache-tomcat-9.0.98/webapps/ ;
                         echo "WAR copied. Tomcat will auto-deploy."
                     '''
                 }
