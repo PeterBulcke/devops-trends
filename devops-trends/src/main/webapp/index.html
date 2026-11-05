@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Trends 2026 | Bright Mind Tech</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #2c4a7a;
+            --navy-2: #4a72b0;
+            --cyan: #4a72b0;
+            --cyan-light: #7a9fd0;
+            --accent: #14868C;
+            --green: #4a72b0;
+            --yellow: #d4b89a;
+            --page: #f5efe0;
+            --white: #ffffff;
+            --text: #2a1f18;
+            --soft: #6a5a4e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--page);
+            color: var(--text);
+            margin: 0;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #2c4a7a 0%, #4a72b0 60%, #3a5e9a 100%);
+            padding: 56px 0 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 36px 36px;
+        }
+
+        .hero::after {
+            display: none;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #14868C;
+            border: 1px solid #14868C;
+            border-radius: 999px;
+            padding: 6px 16px;
+            color: #f0c4b8;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(32px, 5vw, 58px);
+            color: #fff;
+            line-height: 1.05;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: #d4b89a;
+        }
+
+        .hero p.lead {
+            color: #c8d8f0;
+            font-size: 17px;
+            margin-bottom: 24px;
+        }
+
+        .hero-pills {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-pill {
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 6px 14px;
+            color: #ddeafc;
+            font-size: 13px;
+        }
+
+        /* SECTIONS */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #14868C;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(22px, 3vw, 30px);
+            color: #2c4a7a;
+            margin-bottom: 6px;
+        }
+
+        .section-sub {
+            color: var(--soft);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        /* TREND CARDS */
+        .trend-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #d4c8b8;
+            box-shadow: 0 2px 12px rgba(44, 74, 122, 0.12);
+            transition: transform 0.25s, box-shadow 0.25s;
+            height: 100%;
+        }
+
+        .trend-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(44, 74, 122, 0.14);
+        }
+
+        .trend-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+
+        .icon-cyan {
+            background: rgba(74, 114, 176, 0.18);
+            color: #4a72b0;
+        }
+
+        .icon-green {
+            background: rgba(74, 114, 176, 0.18);
+            color: #3a5e9a;
+        }
+
+        .icon-accent {
+            background: rgba(20, 134, 140, 0.15);
+            color: #14868C;
+        }
+
+        .icon-yellow {
+            background: rgba(212, 184, 154, 0.4);
+            color: #8a6a4a;
+        }
+
+        .icon-purple {
+            background: rgba(44, 74, 122, 0.15);
+            color: #2c4a7a;
+        }
+
+        .icon-navy {
+            background: rgba(11, 31, 58, 0.08);
+            color: var(--navy);
+        }
+
+        .trend-card h5 {
+            font-weight: 700;
+            color: #2c4a7a;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .trend-card p {
+            color: var(--soft);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .trend-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+        }
+
+        .tag-cyan {
+            background: rgba(74, 114, 176, 0.18);
+            color: #2c4a7a;
+            border: 1px solid rgba(74, 114, 176, 0.5);
+        }
+
+        .tag-green {
+            background: rgba(74, 114, 176, 0.15);
+            color: #3a5e9a;
+            border: 1px solid rgba(74, 114, 176, 0.4);
+        }
+
+        .tag-accent {
+            background: rgba(232, 93, 4, 0.08);
+            color: #c44b00;
+            border: 1px solid rgba(232, 93, 4, 0.2);
+        }
+
+        .tag-yellow {
+            background: rgba(212, 184, 154, 0.35);
+            color: #7a5a3a;
+            border: 1px solid rgba(212, 184, 154, 0.5);
+        }
+
+        .tag-purple {
+            background: rgba(44, 74, 122, 0.12);
+            color: #2c4a7a;
+            border: 1px solid rgba(44, 74, 122, 0.2);
+        }
+
+        .tag-navy {
+            background: rgba(212, 184, 154, 0.28);
+            color: #5a4a3a;
+            border: 1px solid rgba(212, 184, 154, 0.4);
+        }
+
+        /* TOOL CHART */
+        .chart-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid #d4c8b8;
+            box-shadow: 0 2px 12px rgba(44, 74, 122, 0.12);
+        }
+
+        .tool-row {
+            margin-bottom: 18px;
+        }
+
+        .tool-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tool-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2c4a7a;
+        }
+
+        .tool-pct {
+            font-size: 13px;
+            color: var(--soft);
+            font-weight: 500;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 999px;
+            background: #e8ddd0;
+        }
+
+        .progress-bar {
+            border-radius: 999px;
+        }
+
+        /* SALARY CARDS */
+        .salary-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 26px 22px;
+            border: 1px solid #d4c8b8;
+            box-shadow: 0 2px 12px rgba(44, 74, 122, 0.12);
+            text-align: center;
+            transition: transform 0.25s;
+            height: 100%;
+        }
+
+        .salary-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .salary-card .level {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--soft);
+            margin-bottom: 8px;
+        }
+
+        .salary-card h5 {
+            font-weight: 700;
+            color: #2c4a7a;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .salary-range {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .salary-card .exp {
+            color: var(--soft);
+            font-size: 13px;
+        }
+
+        .salary-card .skills-list {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* HIGHLIGHT BANNER */
+        .highlight-banner {
+            background: linear-gradient(135deg, #2c4a7a 0%, #4a72b0 100%);
+            border-radius: 12px;
+            padding: 28px 32px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .highlight-banner-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .highlight-banner h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: #d4b89a;
+        }
+
+        .highlight-banner p {
+            color: #c8d8f0;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        .page-footer {
+            background: #2c4a7a;
+            color: #9ab0cc;
+            text-align: center;
+            padding: 28px 20px;
+            margin-top: 60px;
+        }
+
+        .page-footer strong {
+            color: #d4b89a;
+        }
+
+        .page-footer a {
+            color: #9ab0cc;
+            border: 1px solid #3a5e9a;
+            border-radius: 6px;
+            padding: 5px 14px;
+            font-size: 12px;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .page-footer a:hover {
+            color: #d4b89a;
+            border-color: #d4b89a;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4b89a, transparent);
+            margin: 48px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="container hero-inner">
+            <div class="hero-tag">Bright Mind Tech &nbsp;&mdash;&nbsp; Annual Report</div>
+            <h1>DevOps Trends <span>2026</span></h1>
+            <p class="lead">What's shaping the DevOps landscape this year — tools, practices, salaries, and what's next
+            </p>
+            <div class="hero-pills">
+                <div class="hero-pill">AI-Assisted DevOps</div>
+                <div class="hero-pill">Platform Engineering</div>
+                <div class="hero-pill">DevSecOps</div>
+                <div class="hero-pill">FinOps</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container py-5">
+
+        <!-- TOP TRENDS -->
+        <div class="text-center mb-4">
+            <div class="section-label"><i class="fas fa-fire"></i> What's Hot</div>
+            <h2 class="section-title">Top DevOps Trends in 2026</h2>
+            <p class="section-sub">The practices and technologies defining modern engineering teams right now</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-accent"><i class="fas fa-robot"></i></div>
+                    <h5>1.AI-Assisted DevOps</h5>
+                    <p>AI is embedded into the CI/CD pipeline — from writing code and reviewing pull requests to
+                        predicting failures before they happen and auto-remediating incidents.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-accent">AIOps</span>
+                        <span class="tag tag-accent">Copilot</span>
+                        <span class="tag tag-accent">Auto-Remediation</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-cyan"><i class="fas fa-layer-group"></i></div>
+                    <h5>2.Platform Engineering</h5>
+                    <p>Teams are building Internal Developer Platforms (IDPs) that give developers self-service access
+                        to infrastructure — reducing cognitive load and speeding up delivery.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-cyan">IDP</span>
+                        <span class="tag tag-cyan">Self-Service</span>
+                        <span class="tag tag-cyan">Backstage</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-green"><i class="fas fa-shield-alt"></i></div>
+                    <h5>3.DevSecOps Maturity</h5>
+                    <p>Security is no longer a gate at the end of development. Shift-left security scanning, SBOM
+                        generation, and supply chain security are now standard pipeline stages.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-green">Shift-Left</span>
+                        <span class="tag tag-green">SBOM</span>
+                        <span class="tag tag-green">SAST / DAST</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-yellow"><i class="fas fa-code-branch"></i></div>
+                    <h5>4. GitOps at Scale</h5>
+                    <p>Git as the single source of truth for both application and infrastructure. ArgoCD and Flux are
+                        replacing manual kubectl commands in production environments.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-yellow">ArgoCD</span>
+                        <span class="tag tag-yellow">Flux</span>
+                        <span class="tag tag-yellow">IaC</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-purple"><i class="fas fa-dollar-sign"></i></div>
+                    <h5>5.FinOps & Cloud Cost Control</h5>
+                    <p>With cloud bills ballooning,FinOps practices are mainstream. Teams are embedding cost visibility
+                        into pipelines and setting spend budgets per deployment.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-purple">FinOps</span>
+                        <span class="tag tag-purple">Cost Allocation</span>
+                        <span class="tag tag-purple">Rightsizing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="trend-card">
+                    <div class="trend-icon icon-navy"><i class="fas fa-eye"></i></div>
+                    <h5>6. OpenTelemetry & Observability</h5>
+                    <p>The OpenTelemetry standard is winning. Unified traces, metrics, and logs across distributed
+                        systems are now expected, not optional, in production environments.</p>
+                    <div class="trend-tags">
+                        <span class="tag tag-navy">OpenTelemetry</span>
+                        <span class="tag tag-navy">Traces</span>
+                        <span class="tag tag-navy">Grafana</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- TOOLS -->
+        <div class="text-center mb-4">
+            <div class="section-label"><i class="fas fa-tools"></i> Tool Rankings</div>
+            <h2 class="section-title">Most Used DevOps Tools in 2026</h2>
+            <p class="section-sub">Based on industry surveys and adoption data across engineering teams globally</p>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="chart-card">
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">1. Kubernetes</span><span
+                                class="tool-pct">91%</span></div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:91%;background:#2c4a7a;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">2. Docker</span><span class="tool-pct">88%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:88%;background:#4a72b0;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">3. GitHub Actions</span><span
+                                class="tool-pct">79%</span></div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:79%;background:#7a9fd0;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">4. Jenkins</span><span
+                                class="tool-pct">74%</span></div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:74%;background:#d4b89a;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">5. Terraform / OpenTofu</span><span
+                                class="tool-pct">70%</span></div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:70%;background:#3a5e9a;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">6. Prometheus + Grafana</span><span
+                                class="tool-pct">65%</span></div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:65%;background:#e85d04;"></div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <div class="tool-info"><span class="tool-name">7. ArgoCD</span><span class="tool-pct">58%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:58%;background:#8aae8a;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- SALARY -->
+        <div class="text-center mb-4">
+            <div class="section-label"><i class="fas fa-chart-line"></i> Compensation</div>
+            <h2 class="section-title">DevOps Salary Trends 2026</h2>
+            <p class="section-sub">Global average ranges — actual figures vary by region, company size, and
+                specialisation</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="salary-card">
+                    <div class="level">Entry Level</div>
+                    <h5>Junior DevOps Engineer</h5>
+                    <div class="salary-range" style="color:#3a5e9a;">$65K – $88K</div>
+                    <div class="exp">0 – 2 years experience</div>
+                    <div class="skills-list">
+                        <span class="tag tag-green">Linux</span>
+                        <span class="tag tag-green">Git</span>
+                        <span class="tag tag-green">CI/CD basics</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="salary-card">
+                    <div class="level">Mid Level</div>
+                    <h5>DevOps Engineer</h5>
+                    <div class="salary-range" style="color:#4a72b0;">$90K – $125K</div>
+                    <div class="exp">2 – 5 years experience</div>
+                    <div class="skills-list">
+                        <span class="tag tag-cyan">Kubernetes</span>
+                        <span class="tag tag-cyan">Terraform</span>
+                        <span class="tag tag-cyan">Cloud</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="salary-card">
+                    <div class="level">Senior Level</div>
+                    <h5>Senior DevOps / SRE</h5>
+                    <div class="salary-range" style="color:#8a6a4a;">$130K – $165K</div>
+                    <div class="exp">5 – 8 years experience</div>
+                    <div class="skills-list">
+                        <span class="tag tag-yellow">Platform Eng</span>
+                        <span class="tag tag-yellow">FinOps</span>
+                        <span class="tag tag-yellow">Security</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="salary-card">
+                    <div class="level">Principal / Architect</div>
+                    <h5>DevOps Architect</h5>
+                    <div class="salary-range" style="color:#14868C;">$170K – $220K</div>
+                    <div class="exp">8+ years experience</div>
+                    <div class="skills-list">
+                        <span class="tag tag-accent">Architecture</span>
+                        <span class="tag tag-accent">Strategy</span>
+                        <span class="tag tag-accent">Leadership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HIGHLIGHT BANNER -->
+        <div class="highlight-banner mb-5">
+            <div class="highlight-banner-inner">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h4>The Skills That Are Moving Salaries in 2026</h4>
+                        <p>Platform Engineering, AI/ML integration experience, multi-cloud architecture, andFinOps
+                            skills are commanding the highest premiums this year. Engineers who can bridge development,
+                            operations, and security continue to be the most in-demand.</p>
+                    </div>
+                    <div class="col-lg-4 text-center mt-3 mt-lg-0">
+                        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:#d4b89a;">+18%
+                        </div>
+                        <div style="color:#a8c8e8;font-size:14px;">Average salary growth<br />YoY for senior DevOps
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="page-footer">
+        <strong>Bright Mind Tech</strong> &nbsp;|&nbsp; DevOps Trends Report 2026
+        <br />
+        <a href="status">Server Status</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
