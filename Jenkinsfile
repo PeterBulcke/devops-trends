@@ -7,9 +7,9 @@ pipeline {
 
     environment {
         // Tomcat private IP (deploys)
-        TOMCAT_URL = 'http://<TOMCAT_PRIVATE_IP>:8080'
+        TOMCAT_URL = 'http://172.31.4.11:8080'
         // Tomcat Elastic IP (browsing)
-        TOMCAT_PUBLIC_URL = 'http://<TOMCAT_PUBLIC_IP>:8080'
+        TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8080'
         // Tomcat application path
         CONTEXT_PATH = '/devops-trends'
     }
@@ -20,7 +20,7 @@ pipeline {
                 echo 'Pulling source code from GitHub...'
                 git branch: 'main',
                     credentialsId: 'github-pat',
-                    url: 'https://github.com/<YOUR_GITHUB_USERNAME>/devops-trends.git'
+                    url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
         stage('Build') {
