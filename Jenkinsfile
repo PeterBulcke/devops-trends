@@ -1,4 +1,3 @@
-$jf = @'
 pipeline {
     agent any
 
@@ -79,5 +78,3 @@ pipeline {
         }
     }
 }
-'@
-[System.IO.File]::WriteAllText("$PWD\Jenkinsfile", $jf, (New-Object System.Text.UTF8Encoding $false))
