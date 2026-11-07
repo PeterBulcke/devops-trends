@@ -1,3 +1,4 @@
+$jf = @'
 pipeline {
     agent any
 
@@ -12,6 +13,8 @@ pipeline {
         TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8080'
         // Tomcat application path
         CONTEXT_PATH = '/devops-trends'
+        // Folder that holds pom.xml ('.' = top level of the repository)
+        APP_DIR = '.'
     }
 
     stages {
@@ -26,32 +29,37 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
-                sh 'mvn -B clean compile'
+                dir("${APP_DIR}") {
+                    sh 'mvn -B clean compile'
+                }
             }
         }
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn -B test'
+                dir("${APP_DIR}") {
+                    sh 'mvn -B test'
+                }
             }
         }
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
-                sh 'mvn -B package -DskipTests'
+                dir("${APP_DIR}") {
+                    sh 'mvn -B package -DskipTests'
+                }
             }
         }
         stage('Deploy to Tomcat') {
             steps {
-                echo "Deploying to Tomcat EC2 at ${TOMCAT_URL}..."
-                deploy adapters: [
-                    tomcat9(
-                        credentialsId: 'TomcatCreds',
-                        url: "${TOMCAT_URL}"
-                    )
-                ],
-                contextPath: "${CONTEXT_PATH}",
-                war: 'target/devops-trends.war'
+                echo "Deploying to Tomcat 10 at ${TOMCAT_URL}..."
+                withCredentials([usernamePassword(credentialsId: 'TomcatCreds', usernameVariable: 'TC_USER', passwordVariable: 'TC_PASS')]) {
+                    sh '''
+                        RESPONSE=$(curl -sS -u "$TC_USER:$TC_PASS" -T "$APP_DIR/target/devops-trends.war" "$TOMCAT_URL/manager/text/deploy?path=$CONTEXT_PATH&update=true")
+                        echo "$RESPONSE"
+                        echo "$RESPONSE" | grep -q '^OK'
+                    '''
+                }
             }
         }
     }
@@ -71,3 +79,5 @@ pipeline {
         }
     }
 }
+'@
+[System.IO.File]::WriteAllText("$PWD\Jenkinsfile", $jf, (New-Object System.Text.UTF8Encoding $false))
