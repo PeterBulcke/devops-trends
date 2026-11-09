@@ -95,4 +95,3 @@ cd devops-trends</code></pre>
 <h2>📝 License</h2>
 
 <p>This project is open source and available under the <a href="LICENSE">MIT License</a>.</p>
-# End.
