@@ -7,13 +7,15 @@ pipeline {
 
     environment {
         // Tomcat private IP (deploys)
-        TOMCAT_URL = 'http://172.31.9.154:8080'
+        TOMCAT_URL        = 'http://172.31.9.154:8080'
         // Tomcat Elastic IP (browsing)
         TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8080'
         // Tomcat application path
-        CONTEXT_PATH = '/devops-trends'
+        CONTEXT_PATH      = '/devops-trends'
         // Folder that holds pom.xml ('.' = top level of the repository)
-        APP_DIR = '.'
+        APP_DIR           = '.'
+        // WAR artifact name (derived from pom.xml artifactId)
+        WAR_FILE          = 'devops-trends.war'
     }
 
     stages {
@@ -25,6 +27,7 @@ pipeline {
                     url: 'https://github.com/PeterBulcke/devops-trends.git'
             }
         }
+
         stage('Build') {
             steps {
                 echo 'Compiling the application...'
@@ -33,6 +36,7 @@ pipeline {
                 }
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -41,6 +45,7 @@ pipeline {
                 }
             }
         }
+
         stage('Package') {
             steps {
                 echo 'Packaging into WAR file...'
@@ -49,12 +54,28 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Tomcat') {
             steps {
                 echo "Deploying to Tomcat 10 at ${TOMCAT_URL}..."
-                withCredentials([usernamePassword(credentialsId: 'TomcatCreds', usernameVariable: 'TC_USER', passwordVariable: 'TC_PASS')]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'TomcatCreds',
+                    usernameVariable: 'TC_USER',
+                    passwordVariable: 'TC_PASS'
+                )]) {
                     sh '''
-                        RESPONSE=$(curl -sS -u "$TC_USER:$TC_PASS" -T "$APP_DIR/target/devops-trends.war" "$TOMCAT_URL/manager/text/deploy?path=$CONTEXT_PATH&update=true")
+                        set -eu
+                        WAR_PATH="${APP_DIR}/target/${WAR_FILE}"
+                        if [ ! -f "$WAR_PATH" ]; then
+                            echo "ERROR: WAR file not found at $WAR_PATH" >&2
+                            exit 1
+                        fi
+
+                        RESPONSE=$(curl -sS --fail-with-body \
+                            -u "$TC_USER:$TC_PASS" \
+                            -T "$WAR_PATH" \
+                            "$TOMCAT_URL/manager/text/deploy?path=$CONTEXT_PATH&update=true")
+
                         echo "$RESPONSE"
                         echo "$RESPONSE" | grep -q '^OK'
                     '''
