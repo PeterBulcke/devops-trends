@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         // Tomcat private IP (deploys)
-        TOMCAT_URL        = 'http://172.31.8.68:8080'
+        TOMCAT_URL        = 'http://172.31.0.93:8080'
         // Tomcat Elastic IP (browsing)
         TOMCAT_PUBLIC_URL = 'http://13.39.88.130:8080'
         // Tomcat application path
